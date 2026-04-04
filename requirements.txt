@@ -5,6 +5,5 @@ pickle
 re
 json
 streamlit
-pickle
 matplotlib
 seaborn
