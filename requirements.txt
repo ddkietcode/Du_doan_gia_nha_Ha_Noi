@@ -1,0 +1,15 @@
+pandas
+numpy
+sklearn.model_selection train_test_split
+sklearn.pipeline Pipeline
+sklearn.compose ColumnTransformer
+sklearn.preprocessing OneHotEncoder, StandardScaler
+sklearn.ensemble RandomForestRegressor
+sklearn.metrics r2_score, mean_squared_error
+pickle
+re
+json
+streamlit as st
+pickle
+matplotlib.pyplot as plt
+seaborn as sns
