@@ -172,40 +172,40 @@ elif page == "Trang 3: Đánh giá & Hiệu năng (Evaluation)":
     else:
         st.warning("Không tìm thấy dữ liệu để vẽ biểu đồ kỹ thuật.")
 
-st.subheader("2. Phân tích sai số (Error Analysis)")
-    
-st.markdown("""
-    **Ý nghĩa biểu đồ:**
-    - **Trục X / Trục Y:** Biểu thị giá trị Thực tế / Dự đoán (Tỷ VNĐ).
-    - **Đường đứt nét màu đỏ (y=x):** Đường dự đoán hoàn hảo. Các điểm nằm trên là đoán cao hơn (Over-predict), nằm dưới là đoán thấp hơn (Under-predict) thực tế.
-    """)
-
-col1, col2 = st.columns(2)
-    
-with col1:
-    st.success("""
-        **🟢 Phân khúc dưới 10 tỷ VNĐ:**
-        - **Nhận xét:** Dữ liệu tập trung dày đặc (1 - 8 tỷ) và bám sát đường đỏ.
-        - **Đánh giá:** Mô hình hoạt động **rất tốt và đáng tin cậy**, độ chính xác cao đối với nhóm tài sản phổ thông.
-        """)
+    st.subheader("2. Phân tích sai số (Error Analysis)")
         
-    st.error("""
-        **🔴 Điểm bất thường (Outliers):**
-        - **Đoán quá cao:** Ví dụ nhà thực tế **5.5 tỷ** nhưng mô hình dự đoán gần **19 tỷ**; hoặc 14 tỷ đoán thành 25 tỷ.
-        - **Đoán quá thấp:** Nhà thực tế **13 tỷ** nhưng chỉ đoán **4.5 tỷ**; hoặc 17 tỷ đoán thành 8 tỷ.
+    st.markdown("""
+        **Ý nghĩa biểu đồ:**
+        - **Trục X / Trục Y:** Biểu thị giá trị Thực tế / Dự đoán (Tỷ VNĐ).
+        - **Đường đứt nét màu đỏ (y=x):** Đường dự đoán hoàn hảo. Các điểm nằm trên là đoán cao hơn (Over-predict), nằm dưới là đoán thấp hơn (Under-predict) thực tế.
         """)
 
-with col2:
-        st.warning("""
-        **🟠 Phân khúc trên 10 tỷ VNĐ:**
-        - **Nhận xét:** Dữ liệu phân tán rộng thành hình phễu (hiện tượng Heteroscedasticity).
-        - **Đánh giá:** Mô hình **thiếu độ chính xác** và gặp khó khăn khi định giá các tài sản có giá trị lớn.
-        """)
+    col1, col2 = st.columns(2)
         
-        st.info("""
-        **💡 Đề xuất cải thiện cho Model:**
-        1. **Thu thập thêm dữ liệu** cho nhóm nhà > 10 tỷ để xử lý Data Imbalance.
-        2. **Thêm Đặc trưng (Features):** Bổ sung biến về độ rộng ngõ, mặt tiền, phong thủy...
-        3. **Log Transformation:** Biến đổi Logarit cho biến Giá để giảm hiện tượng phương sai thay đổi.
-        4. **Lọc Outliers:** Rà soát lại dữ liệu gốc của các điểm dự đoán sai lệch nghiêm trọng.
-        """)
+    with col1:
+        st.success("""
+            **🟢 Phân khúc dưới 10 tỷ VNĐ:**
+            - **Nhận xét:** Dữ liệu tập trung dày đặc (1 - 8 tỷ) và bám sát đường đỏ.
+            - **Đánh giá:** Mô hình hoạt động **rất tốt và đáng tin cậy**, độ chính xác cao đối với nhóm tài sản phổ thông.
+            """)
+            
+        st.error("""
+            **🔴 Điểm bất thường (Outliers):**
+            - **Đoán quá cao:** Ví dụ nhà thực tế **5.5 tỷ** nhưng mô hình dự đoán gần **19 tỷ**; hoặc 14 tỷ đoán thành 25 tỷ.
+            - **Đoán quá thấp:** Nhà thực tế **13 tỷ** nhưng chỉ đoán **4.5 tỷ**; hoặc 17 tỷ đoán thành 8 tỷ.
+            """)
+
+    with col2:
+            st.warning("""
+            **🟠 Phân khúc trên 10 tỷ VNĐ:**
+            - **Nhận xét:** Dữ liệu phân tán rộng thành hình phễu (hiện tượng Heteroscedasticity).
+            - **Đánh giá:** Mô hình **thiếu độ chính xác** và gặp khó khăn khi định giá các tài sản có giá trị lớn.
+            """)
+            
+            st.info("""
+            **💡 Đề xuất cải thiện cho Model:**
+            1. **Thu thập thêm dữ liệu** cho nhóm nhà > 10 tỷ để xử lý Data Imbalance.
+            2. **Thêm Đặc trưng (Features):** Bổ sung biến về độ rộng ngõ, mặt tiền, phong thủy...
+            3. **Log Transformation:** Biến đổi Logarit cho biến Giá để giảm hiện tượng phương sai thay đổi.
+            4. **Lọc Outliers:** Rà soát lại dữ liệu gốc của các điểm dự đoán sai lệch nghiêm trọng.
+            """)
