@@ -84,30 +84,36 @@ elif page == "Trang 2: Triển khai mô hình":
     st.title("Dự báo Giá Bất Động Sản")
     st.write("Sử dụng các thanh trượt và menu thả xuống để nhập thông số căn nhà.")
     
+    # --- CẬP NHẬT MỚI: Bổ sung danh sách Giấy tờ pháp lý ---
     if df_clean is not None:
         quan_list = sorted(df_clean['Quận'].unique())
         loai_nha_list = sorted(df_clean['Loại hình nhà ở'].unique())
+        phap_ly_list = sorted(df_clean['Giấy tờ pháp lý'].astype(str).unique())
     else:
         quan_list = df_raw['Quận'].dropna().unique()
         loai_nha_list = df_raw['Loại hình nhà ở'].dropna().unique()
+        phap_ly_list = df_raw['Giấy tờ pháp lý'].fillna('Không xác định').unique()
 
     with st.form("prediction_form"):
         col1, col2 = st.columns(2)
         with col1:
             quan = st.selectbox("Chọn Quận/Huyện", quan_list)
-            dien_tich = st.number_input("Diện tích (m²)", min_value=10.0, max_value=1000.0, value=50.0, step=1.0)
+            loai_nha = st.selectbox("Chọn Loại hình nhà ở", loai_nha_list)
+            # --- CẬP NHẬT MỚI: Thêm selectbox cho Giấy tờ pháp lý ---
+            phap_ly = st.selectbox("Giấy tờ pháp lý", phap_ly_list)
             
         with col2:
-            loai_nha = st.selectbox("Chọn Loại hình nhà ở", loai_nha_list)
+            dien_tich = st.number_input("Diện tích (m²)", min_value=10.0, max_value=1000.0, value=50.0, step=1.0)
             so_phong = st.number_input("Số phòng ngủ", min_value=1.0, max_value=20.0, value=2.0, step=1.0)
             
         submit_button = st.form_submit_button("Tiến hành Dự đoán")
         
     if submit_button:
-        # Tiền xử lý input giống hệt lúc huấn luyện thông qua Pipeline
+        # --- CẬP NHẬT MỚI: Thêm cột 'Giấy tờ pháp lý' vào input_data ---
         input_data = pd.DataFrame({
             'Quận': [quan],
             'Loại hình nhà ở': [loai_nha],
+            'Giấy tờ pháp lý': [phap_ly],
             'Diện tích': [dien_tich],
             'Số phòng ngủ': [so_phong]
         })
@@ -146,7 +152,8 @@ elif page == "Trang 3: Đánh giá & Hiệu năng (Evaluation)":
     st.subheader("1. Biểu đồ kỹ thuật: Giá trị Thực tế vs Dự đoán")
     if df_clean is not None:
         sample = df_clean.sample(min(300, len(df_clean)), random_state=42)
-        X_sample = sample[['Quận', 'Loại hình nhà ở', 'Diện tích', 'Số phòng ngủ']]
+        # --- CẬP NHẬT MỚI: Thêm 'Giấy tờ pháp lý' vào mảng features để dự đoán biểu đồ ---
+        X_sample = sample[['Quận', 'Loại hình nhà ở', 'Giấy tờ pháp lý', 'Diện tích', 'Số phòng ngủ']]
         y_actual = sample['Giá_Tỷ_VNĐ']
         y_pred = model.predict(X_sample)
         
