@@ -74,7 +74,7 @@ if page == "Trang 1: Giới thiệu & Khám phá dữ liệu (EDA)":
         
     st.subheader("3. Nhận xét về tập dữ liệu")
     st.info("""
-    - **Độ lệch của dữ liệu (Data Skewness):** Dữ liệu bị lệch khá nhiều (imbalanced) về mặt địa lý và loại hình. Số lượng tin đăng tập trung dày đặc ở các quận Đống Đa, Cầu Giấy, Hà Đông. Các loại hình như "Nhà ngõ, hẻm" và "Nhà mặt phố" chiếm hơn 80% tổng bộ dữ liệu.
+    - **Độ lệch của dữ liệu (Data Skewness):** Dữ liệu bị lệch khá nhiều (imbalanced) về mặt địa lý và loại hình. Số lượng tin đăng tập trung dày đặc ở các quận Đống Đa, Thanh Xuân, Hoàng Mai. Các loại hình như "Nhà ngõ, hẻm" và "Nhà mặt phố" chiếm hơn 80% tổng bộ dữ liệu.
     - **Các đặc trưng quan trọng:** Thông qua phân tích, `Diện tích` và `Quận` (vị trí) là hai đặc trưng có tính quyết định mạnh mẽ nhất đến tổng giá trị của một căn nhà.
     - **Vấn đề nhiễu:** Dữ liệu thô có chứa nhiều text trong các cột số (như 'm²', 'phòng') và có những khoảng giá trị ngoại lai (outliers) phi lý. Do đó, toàn bộ đã được đưa qua Pipeline làm sạch trước khi huấn luyện.
     """)
