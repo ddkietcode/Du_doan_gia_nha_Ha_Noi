@@ -48,7 +48,7 @@ if page == "Trang 1: Giới thiệu & Khám phá dữ liệu (EDA)":
     st.title("Phân tích Dữ liệu Nhà ở Hà Nội")
     st.markdown("**Tên đề tài:** Dự đoán giá nhà ở Hà Nội bằng Random Forest")
     st.markdown("**Họ tên SV:** Đoàn Đức Kiệt - **MSSV:** 21T1020463")
-    st.markdown("**Giá trị thực tiễn:** Ứng dụng giúp người mua, người bán và các nhà đầu tư bất động sản có cái nhìn khách quan về mức giá thị trường, từ đó đưa ra các quyết định giao dịch hợp lý dựa trên đặc trưng của căn nhà.")
+    st.markdown("**Giá trị thực tiễn:** Ứng dụng giúp người mua, các nhà đầu tư bất động sản có cái nhìn khách quan về mức giá thị trường, từ đó đưa ra các quyết định giao dịch hợp lý dựa trên đặc trưng của căn nhà.")
     
     st.subheader("1. Dữ liệu thô (Raw Data)")
     st.dataframe(df_raw.head(15))
@@ -74,9 +74,9 @@ if page == "Trang 1: Giới thiệu & Khám phá dữ liệu (EDA)":
         
     st.subheader("3. Nhận xét về tập dữ liệu")
     st.info("""
-    - **Độ lệch của dữ liệu (Data Skewness):** Dữ liệu bị lệch khá nhiều (imbalanced) về mặt địa lý và loại hình. Số lượng tin đăng tập trung dày đặc ở các quận Đống Đa, Thanh Xuân, Hoàng Mai. Các loại hình như "Nhà ngõ, hẻm" và "Nhà mặt phố" chiếm hơn 80% tổng bộ dữ liệu.
-    - **Các đặc trưng quan trọng:** Thông qua phân tích, `Diện tích` và `Quận` (vị trí) là hai đặc trưng có tính quyết định mạnh mẽ nhất đến tổng giá trị của một căn nhà.
-    - **Vấn đề nhiễu:** Dữ liệu thô có chứa nhiều text trong các cột số (như 'm²', 'phòng') và có những khoảng giá trị ngoại lai (outliers) phi lý. Do đó, toàn bộ đã được đưa qua Pipeline làm sạch trước khi huấn luyện.
+    - **Độ lệch của dữ liệu (Data Skewness):** Dữ liệu bị lệch khá mạnh (imbalanced) về mặt địa lý và loại hình. Số lượng tin đăng tập trung dày đặc ở các quận nội thành (như Đống Đa, Thanh Xuân, Hoàng Mai). Trong khi đó, "Nhà ngõ, hẻm" và "Nhà mặt phố" là hai loại hình chiếm áp đảo tới hơn 80% tổng bộ dữ liệu.
+    - **Trọng số đặc trưng (Feature Importance):** Mô hình được huấn luyện dựa trên 5 biến số cốt lõi. Trong đó, Diện tích và Quận (vị trí) là hai đặc trưng mang trọng số quyết định mạnh mẽ nhất đến tổng giá trị tài sản. Các yếu tố còn lại như Giấy tờ pháp lý, Loại hình nhà ở và Số phòng ngủ đóng vai trò tinh chỉnh để tăng độ chính xác cho từng phân khúc cụ thể.
+    - **Xử lý nhiễu (Data Cleaning):** Dữ liệu thô ban đầu chứa nhiều văn bản hỗn hợp trong các cột số (như 'm²', 'phòng') và có những khoảng giá trị ngoại lai (outliers) phi lý (tin đăng ảo, giá sai lệch). Do đó, toàn bộ dữ liệu đã được tự động đưa qua Pipeline để bóc tách số liệu và chuẩn hóa trước khi đưa vào huấn luyện.    
     """)
 
 # --- TRANG 2: DỰ ĐOÁN GIÁ NHÀ ---
@@ -172,14 +172,40 @@ elif page == "Trang 3: Đánh giá & Hiệu năng (Evaluation)":
     else:
         st.warning("Không tìm thấy dữ liệu để vẽ biểu đồ kỹ thuật.")
 
-    st.subheader("2. Phân tích sai số (Error Analysis)")
-    st.error("""
-    **Mô hình thường dự đoán sai ở đâu?**
-    - **Phân khúc bất động sản siêu cao cấp:** Biểu đồ cho thấy đối với những căn nhà có giá trị rất lớn (> 30 tỷ), thuật toán thường dự đoán thấp hơn giá trị thực tế (Underfitting tại các điểm này). Lý do là do mẫu dữ liệu ở phân khúc này quá ít (imbalanced data).
-    - **Nhà trong ngõ sâu:** Mô hình có thể định giá quá cao cho những căn nhà diện tích rộng nhưng lại nằm sâu trong ngõ hẻm ô tô không vào được. 
+st.subheader("2. Phân tích sai số (Error Analysis)")
     
-    **Hướng cải thiện:**
-    1. Bổ sung thêm các đặc trưng (features) quan trọng chưa có trong tập dữ liệu: *Độ rộng ngõ trước nhà, Khoảng cách ra đường lớn, Chất lượng nội thất, Hướng nhà*.
-    2. Cào thêm dữ liệu về các căn biệt thự/nhà mặt phố cao cấp để làm cân bằng phổ dữ liệu huấn luyện.
-    3. Thử nghiệm các kiến trúc mô hình Gradient Boosting (XGBoost, LightGBM) để tối ưu hóa sai số dư (residuals).
+st.markdown("""
+    **Ý nghĩa biểu đồ:**
+    - **Trục X / Trục Y:** Biểu thị giá trị Thực tế / Dự đoán (Tỷ VNĐ).
+    - **Đường đứt nét màu đỏ (y=x):** Đường dự đoán hoàn hảo. Các điểm nằm trên là đoán cao hơn (Over-predict), nằm dưới là đoán thấp hơn (Under-predict) thực tế.
     """)
+
+col1, col2 = st.columns(2)
+    
+with col1:
+    st.success("""
+        **🟢 Phân khúc dưới 10 tỷ VNĐ:**
+        - **Nhận xét:** Dữ liệu tập trung dày đặc (1 - 8 tỷ) và bám sát đường đỏ.
+        - **Đánh giá:** Mô hình hoạt động **rất tốt và đáng tin cậy**, độ chính xác cao đối với nhóm tài sản phổ thông.
+        """)
+        
+    st.error("""
+        **🔴 Điểm bất thường (Outliers):**
+        - **Đoán quá cao:** Ví dụ nhà thực tế **5.5 tỷ** nhưng mô hình dự đoán gần **19 tỷ**; hoặc 14 tỷ đoán thành 25 tỷ.
+        - **Đoán quá thấp:** Nhà thực tế **13 tỷ** nhưng chỉ đoán **4.5 tỷ**; hoặc 17 tỷ đoán thành 8 tỷ.
+        """)
+
+with col2:
+        st.warning("""
+        **🟠 Phân khúc trên 10 tỷ VNĐ:**
+        - **Nhận xét:** Dữ liệu phân tán rộng thành hình phễu (hiện tượng Heteroscedasticity).
+        - **Đánh giá:** Mô hình **thiếu độ chính xác** và gặp khó khăn khi định giá các tài sản có giá trị lớn.
+        """)
+        
+        st.info("""
+        **💡 Đề xuất cải thiện cho Model:**
+        1. **Thu thập thêm dữ liệu** cho nhóm nhà > 10 tỷ để xử lý Data Imbalance.
+        2. **Thêm Đặc trưng (Features):** Bổ sung biến về độ rộng ngõ, mặt tiền, phong thủy...
+        3. **Log Transformation:** Biến đổi Logarit cho biến Giá để giảm hiện tượng phương sai thay đổi.
+        4. **Lọc Outliers:** Rà soát lại dữ liệu gốc của các điểm dự đoán sai lệch nghiêm trọng.
+        """)
