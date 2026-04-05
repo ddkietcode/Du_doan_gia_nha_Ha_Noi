@@ -46,9 +46,9 @@ page = st.sidebar.radio("Chọn trang:",
 # --- TRANG 1: GIỚI THIỆU & EDA ---
 if page == "Trang 1: Giới thiệu & Khám phá dữ liệu (EDA)":
     st.title("Phân tích Dữ liệu Nhà ở Hà Nội")
-    st.markdown("**Tên đề tài:** Dự đoán giá nhà ở Hà Nội bằng Random Forest")
+    st.markdown("**Tên đề tài:** Dự đoán giá nhà ở Hà Nội bằng Random Forest nhằm hỗ trợ người mua nhà và nhà đầu tư ra quyết định")
     st.markdown("**Họ tên SV:** Đoàn Đức Kiệt - **MSSV:** 21T1020463")
-    st.markdown("**Giá trị thực tiễn:** Ứng dụng giúp người mua, các nhà đầu tư bất động sản có cái nhìn khách quan về mức giá thị trường, từ đó đưa ra các quyết định giao dịch hợp lý dựa trên đặc trưng của căn nhà.")
+    st.markdown("**Giá trị thực tiễn:** Ước lượng giá bất động sản dựa trên các đặc trưng như quận, loại hình nhà ở, diện tích, số phòng ngủ, giấy tờ pháp lý nhằm hỗ trợ người mua và nhà đầu tư ra quyết định.")
     
     st.subheader("1. Dữ liệu thô (Raw Data)")
     st.dataframe(df_raw.head(15))
